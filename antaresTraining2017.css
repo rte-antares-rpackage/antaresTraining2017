@@ -1,0 +1,136 @@
+.footer {
+    color: black; background: #E8E8E8;
+    position: fixed; top: 90%;
+    text-align:center; width:100%;
+}
+
+
+
+.code-slide .reveal h1,
+.code-slide .reveal p {
+    text-align: justify;
+}
+
+.code-slide .reveal h1 .reveal h2{
+    Font-Weight: Bold;
+}
+
+.code-slide pre code {
+    font-size: 1em;
+}
+
+.first-title-slide .reveal h1,
+.first-title-slide .reveal p {
+    color: white;
+    top:40%;
+    position: fixed;
+    font-size: 250%;
+}
+
+.first-title-slide .reveal p {
+  left: 25%;
+} 
+
+.first-title-slide .reveal .state-background {
+  background: #ef7d40;
+} 
+
+.second-title-slide .reveal h1,
+.second-title-slide .reveal p {
+    color: white;
+    top:40%;
+    position: fixed;
+    font-size: 250%;
+}
+
+.second-title-slide .reveal p {
+  left: 25%;
+} 
+
+.second-title-slide .reveal .state-background {
+  background: #053eaf;
+}
+
+.third-title-slide .reveal .state-background {
+  background: #1bbcf7;
+}
+
+.fourth-title-slide .reveal .state-background {
+  background: #c40782;
+}
+
+.fifth-title-slide .reveal .state-background {
+  background: #28181d;
+}
+
+.antaresViz .reveal .state-background {
+   background-image: url("./inst/img/bpExemple.png");
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+.antaresViz .reveal h1,
+.antaresViz .reveal p {
+    color: black;
+    text-align: center;
+    Font-Weight: Bold;
+}
+
+.explainTheResult .reveal .state-background {
+   background-image: url("./inst/img/unsupplied_energy_in_France_v2.png");
+   background-repeat: no-repeat;
+   background-position:center;
+   margin-top:40px;
+   margin-bottom: 40px;
+}
+
+.explainTheResult2 .reveal .state-background {
+   background-image: url("./inst/img/removeSomeVariables_v2.png");
+   background-repeat: no-repeat;
+   background-position:center;
+   margin-top:40px;
+   margin-bottom: 40px;
+}
+
+
+
+.github .reveal .state-background {
+   background-image: url("./inst/img/github_antares.png");
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+.github .reveal p {
+    color: #0000BA;
+    top:50%;
+    left:25%;
+    position: fixed;
+    font-size: 150%;
+}
+
+.thanks .reveal p {
+    color: #0000BA;
+    top:25%;
+    left:25%;
+    position: fixed;
+    font-size: 200%;
+}
+
+.section .reveal .state-background {
+   background-image: url("./inst/img/logoRte.png"), url("./inst/img/logoAntares.png"), url("./inst/img/logoR.png"), url("./inst/img/rte_pylon.jpg");
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position: bottom right, bottom left, bottom 5% left 7%, bottom center;
+  background-size: 15% 20%, 10% 15%, 10% 15%, 100% 60%;
+  z-index: 0, 0, 0, 0;
+  background-color: white;
+}
+.section .reveal h1,
+.section .reveal p {
+    color: black;
+    text-align: center;
+    top: 40%;
+}
+
+.section .reveal h1{
+  Font-Weight: Bold;
+}
