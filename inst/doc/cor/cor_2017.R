@@ -1,4 +1,5 @@
 library(antaresRead)
+
 library(antaresProcessing)
 library(antaresViz)
 library(data.table)
@@ -23,8 +24,7 @@ myData<-readAntares(
 
 myConData<-removeVirtualAreas(
   x=myData,
-  storageFlexibility = getAreas(select = c("pum", "tur")),
-  production = getAreas(select = c("z_dsr", "y_mul"))
+  storageFlexibility = getAreas(select = c("pum", "tur", "z_dsr", "y_mul"))
 )
 
 #54 Compute the number of areas without virtual areas
@@ -122,6 +122,15 @@ myConDataFr<-removeVirtualAreas(
 
 unique(myConDataFr$links$link)
 
+
+myConDataFr<-removeVirtualAreas(
+  x=myDataFr,
+  storageFlexibility = getAreas(select = c("pum", "tur")),
+  production = getAreas(select = c("z_dsr", "y_mul")),
+  newCols = FALSE, 
+  reassignCosts = TRUE
+)
+
 prodStack(myConDataFr, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, area="fr")
 
 prodStack(myDataFr, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, area="fr")
@@ -138,19 +147,43 @@ plot(myConDataFr$areas, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"
 mlTyndp<-"E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030"
 
 #mlTyndp<-mapLayout(readLayout())
+#plotMapLayout(mlTyndp)
 #save(mlTyndp, file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\user\\mlTyndp2017.rda")
 #saveRDS(mlTyndp, file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\user\\mlTyndp2017.rds")
+#saveRDS(mlTyndp, file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\user\\mlTyndp2017_V2.rds")
 
 
-load(file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\user\\mlTyndp2017.rda")
+myPath<-"E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030"
+opts<-setSimulationPath(myPath, "20170830-1049eco-reference")
 
+mlTyndp<-readRDS(file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\user\\layout\\mapLayoutTyndp.rds")
 
-plotMapLayout(mlTyndp)
+myDataEurope<-readAntares(links = "all", areas = "all", linkCapacity = TRUE, clusters = "all")
 
-plotMap(myConDataFr, mlTyndp, interactive = FALSE)
+myConDataEurope<-removeVirtualAreas(
+  x=myDataEurope,
+  storageFlexibility = getAreas(select = c("pum", "tur","z_dsr", "y_mul")),
+  newCols = FALSE, 
+  reassignCosts = TRUE
+)
 
+myConDataEurope<-removeVirtualAreas(
+  x=myDataEurope,
+  storageFlexibility = getAreas(select = c("pum", "tur")),
+  production = getAreas(select = c("z_dsr", "y_mul")),
+  newCols = FALSE, 
+  reassignCosts = TRUE
+)
 
-myDataEurope<-readAntares(links = "all", areas = "all", mcYears = 4, linkCapacity = TRUE)
+myConDataEurope<-removeVirtualAreas(
+  x=myDataEurope,
+  production = "z_dsr110",
+  newCols = TRUE
+)
+
+myConDataEurope$areas[area=="fr"] %>% View("fr_con")
+plotMap(myDataEurope, mlTyndp, interactive = TRUE)
+
 
 myConDataEurope<-removeVirtualAreas(
   x=myDataEurope,
@@ -179,22 +212,55 @@ varPlotMap<-c(vecGen, vecRen)
 addLoadFactorLink(myConDataEurope)
 
 myConDataEurope$links
-resOptions<-plotMapOptions(areaDefaultCol = c("#00CB78"))
+resOptions<-plotMapOptions(areaDefaultCol = "red", linkDefaultCol = "red")
 
+linkColorScaleOpts<-colorScaleOptions(
+  breaks = 1, 
+  domain = NULL, 
+  negCol = "#00FF00", 
+  zeroCol = "#FFFF00", 
+  posCol = "#FF0000", 
+  naCol = "#EEEEEE",
+  zeroTol = NULL, 
+  colors = NULL, 
+  levels = c(0,1)
+)
+
+
+areaColorScaleOpts<-colorScaleOptions(
+  breaks = c(5000, 70000, 80000),
+  colors = c("#00FFFF", "#B7FFFF", "#FFFF00"), 
+  domain = 1:100000, 
+  zeroTol = 1
+)
+
+resOptions<-plotMapOptions(
+  areaColorScaleOpts=areaColorScaleOpts,
+  linkColorScaleOpts = linkColorScaleOpts, 
+  areaDefaultCol = "#00FFFF"
+)
+
+resOptions<-plotMapOptions(areaDefaultCol = "red", linkDefaultCol = "orange")
 plotMap(
-  subset(myConDataEurope, timeIds = 115), 
+ myConDataEurope, 
   mlTyndp, 
-  sizeAreaVars=varPlotMap, 
-  areaChartType="pie", 
-  interactive = FALSE,
-  sizeMiniPlot = TRUE, 
-  colAreaVar="LOAD", 
+  interactive = TRUE,
+  colAreaVar="WIND", 
   colLinkVar="congestion",
   sizeLinkVar="FLOW LIN.",
-  popupAreaVars = c(varPlotMap, "LOAD", "DTG MRG", "MAX MRG" ),
-  type="detail",
-  timeId=115
+  popupAreaVars = c(varPlotMap, "LOAD", "DTG MRG", "MAX MRG", "UNSP. ENRG" , "SPIL. ENRG"),
+  options = resOptions
 )
+
+
+plotMap(
+  myConDataEurope, 
+  mlTyndp, 
+  interactive = FALSE,
+  colAreaVar="WIND", 
+  options = resOptions
+)
+
 
 resOptions<-plotMapOptions(areaDefaultCol = "red", linkDefaultCol = "orange")
 
@@ -207,4 +273,103 @@ plotMap(
   mlTyndp, 
   .updateBtn = TRUE, 
   .updateBtnInit=TRUE
+)
+
+
+### check plotMap  link color ======
+
+linkColorScaleOpts<-colorScaleOptions(breaks = 1, domain = NULL, negCol = "#00FF00",
+                                      zeroCol = "#FFFF00", posCol = "#FF0000", naCol = "#EEEEEE",
+                                      zeroTol = NULL, colors = NULL, levels = c(0,1))
+
+
+areaColorScaleOpts<-colorScaleOptions(
+  breaks = c(5000, 70000, 80000),
+  colors = c("#00FFFF", "#B7FFFF", "#FFFF00"),
+  negCol="#000000", 
+  posCol="#00FF00")
+
+resOptions<-plotMapOptions(linkColorScaleOpts = linkColorScaleOpts)
+
+plotMap(
+  subset(myConDataEurope, timeIds = 115), 
+  mlTyndp, 
+  colAreaVar="LOAD", 
+  colLinkVar="congestion",
+  options = resOptions, 
+  areaChartType="pie", 
+  sizeMiniPlot = TRUE, 
+  sizeAreaVars=varPlotMap,
+  interactive = FALSE
+)
+
+CopymlTyndp<-mlTyndp
+
+myDataEurope
+
+myConDataEurope
+
+CopymlTyndp$map<-NULL
+
+plotMap(
+  myDataEurope, 
+  CopymlTyndp, 
+  interactive = FALSE
+)
+
+??colorScaleOptions
+
+
+
+### wirte H5 ====== 
+setSimulationPath(myPath, 3)
+writeAntaresH5(
+  path="E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\writeH5",
+  allData = FALSE,
+  misc = TRUE, 
+  thermalAvailabilities = FALSE,
+  hydroStorageMaxPower = TRUE, 
+  reserve = TRUE,
+  linkCapacity = TRUE,
+  mustRun = TRUE, 
+  writeAllSimulations = TRUE,
+  writeMcAll = TRUE,
+  nbCores=1,
+  removeVirtualAreas=TRUE,
+  storageFlexibility=getAreas(select = c("pum", "tur", "z_dsr", "y_mul")),
+  newCols = FALSE,
+  overwrite = TRUE, 
+  timeSteps = "hourly"
+)
+
+
+## KO 
+writeAntaresH5(
+  path="E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\writeH5",
+  timeSteps = "hourly", 
+  overwrite = TRUE, 
+  removeVirtualAreas=TRUE,
+  storageFlexibility=getAreas(select = c("pum", "tur")),
+  production = getAreas(select = c("z_dsr", "y_mul"))
+)
+
+## OK 
+writeAntaresH5(
+  path="E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\writeH5",
+  timeSteps = "hourly", 
+  overwrite = TRUE, 
+  removeVirtualAreas=TRUE,
+  storageFlexibility=getAreas(select = c("pum", "tur"))
+)
+
+#KO 
+setSimulationPath(myPath, 3)
+writeAntaresH5(
+  path="E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\writeH5",
+  timeSteps = "hourly", 
+  overwrite = TRUE, 
+  removeVirtualAreas=TRUE,
+  production = getAreas(select = c("z_dsr", "y_mul")), 
+  writeMcAll = FALSE, 
+  newCols = FALSE
 )
