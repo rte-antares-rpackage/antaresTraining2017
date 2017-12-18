@@ -118,7 +118,7 @@ ls()
 A<-34;ls()
 ```
 
-Remove objects form memory
+Remove objects from memory
 ```{r, echo=TRUE}
 ls();rm(A)
 ls()
@@ -226,13 +226,15 @@ You can write your notes here.
 myPath<-"E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030"
 setSimulationPath(myPath, "20170830-1049eco-reference")
 
-myData<-readAntares(
+suppressWarnings(
+  myData<-readAntares(
   areas = "all", 
   links="all", 
   clusters = "all", 
   linkCapacity = TRUE,
   mustRun = TRUE,
   showProgress = FALSE
+)
 )
 ```
 
@@ -298,6 +300,31 @@ You can use the r function lenght.
 ??antaresRead::getLinks
 ```
 
+Data.table
+========================================================
+type: title-slide
+
+<!---
+This is a comment, it will not be included in this presentation. 
+
+You can write your notes here. 
+
+You can use the r function lenght. 
+-->
+
+- DT[<span style="color:blue"> i </span>,  <span style="color:green">  j </span>, <span style="color:red">  by </span>]
+
+- subset rows using <span style="color:blue"> i </span>
+
+- then calculate <span style="color:green"> j </span>
+
+- grouped <span style="color:red"> by  </span>
+
+You can learn the basics about data.table with the  [vignette.](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
+
+You can also found the cheat sheet [here.](https://www.r-bloggers.com/the-data-table-cheat-sheet/)
+
+
 antaresDataList : List of date.tables
 ========================================================
 type: title-slide
@@ -321,30 +348,7 @@ You can use the r function lenght.
 
 - Compute the number of links with congestion 
 
-Data.table
-========================================================
-type: title-slide
 
-<!---
-This is a comment, it will not be included in this presentation. 
-
-You can write your notes here. 
-
-You can use the r function lenght. 
--->
-
-- DT[<span style="color:blue"> i </span>, <span style="color:green"> j </span>,<span style="color:red"> j </span>]
-
-- subset rows using <span style="color:blue"> i </span>
-
-- then calculate <span style="color:green"> i </span>
-
-- grouped by <span style="color:red"> i </span>
-
-You can learn the basics about data.table with the  [vignette.](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
-
-
-You can also found the cheat sheet [here.](https://www.r-bloggers.com/the-data-table-cheat-sheet/)
 
 antaresDataList : use data.table
 ========================================================
@@ -420,11 +424,11 @@ You can use the r function lenght.
 
 ***exercise*** :
 
-- Get the first year and the first date where there is more than 400MW of unsupplied energy in France and use prodStack to visualize the production stack for this week.  
+- Get the first year and the first date where there is more than 700MW of unsupplied energy in France and use prodStack to visualize the production stack for this week.  
 
 - Visualise the evolution of the echanges between France and other countries with exchangesStack. 
 
-- plot the price for this week.
+- Plot the price for this week.
 
 antaresViz : plotMap
 ========================================================
@@ -440,7 +444,7 @@ You can use the r function lenght.
 
 ***exercise*** :
 
-- For the the first date where there is unsupplied energy represend the mix of production in Europe and represend the echanges between areas.  
+- For the date mentioned before represend the mix of production in Europe and represend the echanges between areas.  
 
 
 
@@ -467,7 +471,7 @@ type: code-slide
 majorFunctionsAntaresProcessing<-data.frame(
   functions=c(
     "Compute economic surplus",
-    "Add downward and upwart margins of areas",
+    "Add downward and upward margins of areas",
     "Add export and import of areas or districts",
     "Add net load of areas",
     "Compare two antaresDataTable",
