@@ -69,11 +69,13 @@
    background-size: cover;
 }
 
-.antaresViz .reveal h1,
 .antaresViz .reveal p {
-    color: black;
-    text-align: center;
+    color: white;
     Font-Weight: Bold;
+    vertical-align: middle;
+    line-height: 1000px;
+    text-align: center;
+    font-size: 250%;
 }
 
 .explainTheResult .reveal .state-background {
