@@ -47,6 +47,181 @@ title: false
 
 Lets try appAntaresViz
 
+Unsupplied energy
+========================================================
+type: text-slide
+
+<!---
+TODO rajouter une image de l'aplication
+-->
+- Run antaresVizualisation
+
+- Select the folder "dataTyndp"
+
+- Select the simulation "20170830-1049eco-reference.h5"
+
+- Click on "Set Simulation"
+
+- Imports all areas and links 
+
+- Click on "Validate & import data"
+
+- Click on "Launch Analysis"
+
+- Click on "tsPlot"
+
+- Click on "H5request"
+
+- Import mcYear 4 
+
+
+Unsupplied energy
+========================================================
+type: text-slide
+
+
+***exercise*** :in the tab "tsPlot" and "type : monotone/times series/heat map" 
+- Find the country who have the most of unsupplied energy for the mcYear 4 between "France", "Germany", "Belgium", "Netherlands", "Portugal", "Austria" and "Great Britain"
+- For this country, which month have the most of unsupplied energy
+- Find the date when the maximum of unsupplied energy is reached, in the following we will refers to this country by <span style="color:red;">Mystery</span> and the date by <span style="color:red;">Ttime</span>
+- Why there is unsupplied energy for this year in <span style="color:red;">Mystery</span>? --> We will see this thanks to **prodStack**
+
+Unsupplied energy / prodStack
+========================================================
+type: text-slide
+
+
+***exercise*** : in the tab "prodStack" 
+- Import mcYear 4 and 12
+- Plot the prodStack for <span style="color:red;">Mystery</span> and for the week containing <span style="color:red;">Ttime</span> for the year 4
+- Find the amount of wind production and import/export 
+- Change the parameter mcYear to **12** and find the amount of wind production and import/export 
+- Does <span style="color:red;">Mystery</span> import or export for the year **12** ?
+- To whom <span style="color:red;">Mystery</span> is importing or exporting for the year 12 ? --> We will see this thanks to **exchangesStack**
+
+Unsupplied energy / exchangesStack
+========================================================
+type: text-slide
+
+***exercise*** : 
+in the tab "exchangesStack": 
+- Import mcYear 4 and 12
+- Change the "area" to <span style="color:red;">Mystery</span>
+- For the year 12, to whom <span style="color:red;">Mystery</span> is importing or exporting ? 
+- For the year 4, to whom <span style="color:red;">Mystery</span> is importing or exporting ? 
+- For <span style="color:red;">Ttime</span> and the year 4, are there null flows between this country and others ? if yes, why ? --> We will see this thanks to **plotMap**
+
+Unsupplied energy / plotMap - Layout
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "plotMap/Current Layout":
+- import the file "dataTyndp/mapLayoutTyndp.RDS" with the button "Browse...""
+
+Unsupplied energy / Map 
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "plotMap/Map":
+
+- Import mcYear 4 and 12 and change the parameter mcYear to 4
+- Change the parameter DateRange for the day containing <span style="color:red;">Ttime</span>
+- In the tab "Areas", change the parameter "color"" to "LOAD"
+- Click on update 
+- In the tab "Areas", change the parameter "Size" to "H. ROR", "PSP", "MISC. NDG", "WIND", "SOLAR", "NUCLEAR", "LIGNITE", "GAS", "COAL", "OIL", "MIX. FUEL", "MISC. DTG", "H. STOR"
+- Click on update 
+- In the tab "Areas/miniPlot", change the parameter "areaCharType" to "pie chart", click on update 
+- In the tab "Areas/miniPlot", check the box "sizeMiniPlot", click on update 
+- In the tab "Areas", change the parameter "Popup" to "UNSP. ENRG", "SPIL. ENRG", "DTG MRG", "AVL DTG", "MAX MRG", "MRG. PRICE", "BALANCE", click on update 
+- Click on one pie chart
+
+Unsupplied energy / Map for links
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "plotMap/Map":
+
+- In the tab "Links", change the parameter "Color" to "CONG. PROP +"
+- Click on update 
+- In the tab "Links", change the parameter "Width" to "FLOW LIN."
+- Click on update 
+- Click on one link  
+- In the tab "Links", change the parameter "Popup" to "CONG. PROP -", "MARG. COST"
+- Click on update 
+- Click on one link  
+
+Unsupplied energy / Questions
+========================================================
+type: text-slide
+
+***exercise*** : in the tab "plotMap/Map":
+
+- On the map, click on play and pause when you reach <span style="color:red;">Ttime</span>
+- Is <span style="color:red;">Mystery</span> imports or exports? to whom ? 
+- Are there null flows between <span style="color:red;">Mystery</span> and others ? if yes, why ? 
+- Are there links not congestionned between Netherlands and others countries ? why ? 
+- Change the parameter mcYear to 12
+- Click on update
+- Is <span style="color:red;">Mystery</span> imports or exports? to whom and why ? 
+- It's better to compare the two maps in one screen --> We will see this thanks to **Data/compare**
+
+Unsupplied energy / Compare
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "Data":
+- Add **mcYear** in the parameter "plotMap" 
+- Click on "Launch Analysis"
+- Go to the tab "plotMap/Map"
+
+Unsupplied energy / Compare plotMap
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "plotMap/Map":
+- Import mcYear 4 and 12
+- Reconfigure the maps with the previous parameters (Areas, color, size, popup etc.) in one step
+- Click on the first graph and choose the mcYear 4 
+- Click on the second graph and choose the mcYear 12 
+- Click on the update button 
+- Change the parameter DateRange for the day containing <span style="color:red;">Ttime</span>
+- Click on play on one map and pause when you reach <span style="color:red;">Ttime</span> 
+- At <span style="color:red;">Ttime</span> , which is the most important production in Germany for year 4 and for year 12 ?
+- Same question for Great Britain
+- The future is unpredictable so we try several scenarios to have an idea about the possible futures and increase the chance to make a good decision (more thermal capacities, more renewable energy etc.) --> We will see this thanks to **Data - scenarios**
+
+Unsupplied energy / Data - scenarios
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "Data":
+- Click in the tab "Import Data"
+- Select the simulation "20170112-1832eco-pascontraintenbmax.h5"
+- Click on "Set simulation"
+- Imports all areas and links 
+- Click on "Validate & import data"
+- Come back to the tab "Import Data"
+- Select a new simulation "201710118-0902eco-aveccontraintenbmax.h5"
+- Click on "Set simulation"
+- Imports all areas and links
+- Click on "Validate & import data"
+- delete "mcYear" in the parameter "plotMap"
+- Click on "Launch Analysis"
+
+Unsupplied energy / Data - scenarios - tsPlot
+========================================================
+type: text-slide
+
+***exercise*** : In the tab "tsPlot":
+- Import mcYear 4 
+- Change DateRange to contain the all year
+- Plot the nuclear monotone for France, Germany and Great Britain 
+- Are there differences between scenarios ? if yes, why ? 
+- Plot the nuclear density for France for the all year
+- Are there differences between scenarios ? 
+- Plot the nuclear heatmap for France
+- For which month there is the most differences between scenarios ? 
+
 
 antaresViz is great but why I should learn R ? 
 ========================================================
