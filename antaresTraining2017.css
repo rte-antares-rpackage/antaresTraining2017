@@ -4,6 +4,9 @@
     text-align:center; width:100%;
 }
 
+.toBig .reveal p {
+    font-size: 100%;
+}
 
 
 .code-slide .reveal h1,

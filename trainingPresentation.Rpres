@@ -57,13 +57,16 @@ title: false
 
 Lets try appAntaresViz
 
-Unsupplied energy
+Unsupplied energy scenario / Data
 ========================================================
 type: text-slide
 
 <!---
 TODO rajouter une image de l'aplication
 -->
+
+***exercise/import data*** : 
+<small>
 - Run antaresVizualisation
 
 - Select the folder "dataTyndp"
@@ -84,8 +87,11 @@ TODO rajouter une image de l'aplication
 
 - Import mcYear 4 
 
+</small>
 
-Unsupplied energy
+<div class="footer"></div>
+
+Unsupplied energy scenario / tsPlot
 ========================================================
 type: text-slide
 
@@ -96,7 +102,7 @@ type: text-slide
 - Find the date when the maximum of unsupplied energy is reached, in the following we will refers to this country by <span style="color:red;">Mystery</span> and the date by <span style="color:red;">Ttime</span>
 - Why there is unsupplied energy for this year in <span style="color:red;">Mystery</span>? --> We will see this thanks to **prodStack**
 
-Unsupplied energy / prodStack
+Unsupplied energy scenario / prodStack
 ========================================================
 type: text-slide
 
@@ -109,7 +115,7 @@ type: text-slide
 - Does <span style="color:red;">Mystery</span> import or export for the year **12** ?
 - To whom <span style="color:red;">Mystery</span> is importing or exporting for the year 12 ? --> We will see this thanks to **exchangesStack**
 
-Unsupplied energy / exchangesStack
+Unsupplied energy scenario / exchangesStack
 ========================================================
 type: text-slide
 
@@ -121,31 +127,40 @@ in the tab "exchangesStack":
 - For the year 4, to whom <span style="color:red;">Mystery</span> is importing or exporting ? 
 - For <span style="color:red;">Ttime</span> and the year 4, are there null flows between this country and others ? if yes, why ? --> We will see this thanks to **plotMap**
 
-Unsupplied energy / plotMap - Layout
+Unsupplied energy scenario / plotMap - Layout
 ========================================================
 type: text-slide
 
 ***exercise/import data*** : in the tab "plotMap/Current Layout":
 - import the file "dataTyndp/mapLayoutTyndp.RDS" with the button "Browse...""
 
-Unsupplied energy / Map 
+Unsupplied energy scenario / Map 
 ========================================================
 type: text-slide
 
 ***exercise/import data*** : in the tab "plotMap/Map":
-
+<small>
 - Import mcYear 4 and 12 and change the parameter mcYear to 4
 - Change the parameter DateRange for the day containing <span style="color:red;">Ttime</span>
 - In the tab "Areas", change the parameter "color"" to "LOAD"
 - Click on update 
 - In the tab "Areas", change the parameter "Size" to "H. ROR", "PSP", "MISC. NDG", "WIND", "SOLAR", "NUCLEAR", "LIGNITE", "GAS", "COAL", "OIL", "MIX. FUEL", "MISC. DTG", "H. STOR"
 - Click on update 
+</small>
+
+<div class="footer"></div>
+
+Unsupplied energy scenario / Map with miniplots
+========================================================
+type: text-slide
+
+***exercise/import data*** : in the tab "plotMap/Map":
 - In the tab "Areas/miniPlot", change the parameter "areaCharType" to "pie chart", click on update 
 - In the tab "Areas/miniPlot", check the box "sizeMiniPlot", click on update 
 - In the tab "Areas", change the parameter "Popup" to "UNSP. ENRG", "SPIL. ENRG", "DTG MRG", "AVL DTG", "MAX MRG", "MRG. PRICE", "BALANCE", click on update 
 - Click on one pie chart
 
-Unsupplied energy / Map for links
+Unsupplied energy scenario / Map for links
 ========================================================
 type: text-slide
 
@@ -160,7 +175,7 @@ type: text-slide
 - Click on update 
 - Click on one link  
 
-Unsupplied energy / Questions
+Unsupplied energy scenario / Questions
 ========================================================
 type: text-slide
 
@@ -175,7 +190,7 @@ type: text-slide
 - Is <span style="color:red;">Mystery</span> imports or exports? to whom and why ? 
 - It's better to compare the two maps in one screen --> We will see this thanks to **Data/compare**
 
-Unsupplied energy / Compare
+Unsupplied energy scenario / Compare
 ========================================================
 type: text-slide
 
@@ -184,11 +199,11 @@ type: text-slide
 - Click on "Launch Analysis"
 - Go to the tab "plotMap/Map"
 
-Unsupplied energy / Compare plotMap
+Unsupplied energy scenario / Compare plotMap
 ========================================================
-type: text-slide
+type: toBig
 
-***exercise/import data*** : in the tab "plotMap/Map":
+***exercise/import data*** : in the tab "plotMap/Map":<small>
 - Import mcYear 4 and 12
 - Reconfigure the maps with the previous parameters (Areas, color, size, popup etc.) in one step
 - Click on the first graph and choose the mcYear 4 
@@ -197,14 +212,17 @@ type: text-slide
 - Change the parameter DateRange for the day containing <span style="color:red;">Ttime</span>
 - Click on play on one map and pause when you reach <span style="color:red;">Ttime</span> 
 - At <span style="color:red;">Ttime</span> , which is the most important production in Germany for year 4 and for year 12 ?
-- Same question for Great Britain
-- The future is unpredictable so we try several scenarios to have an idea about the possible futures and increase the chance to make a good decision (more thermal capacities, more renewable energy etc.) --> We will see this thanks to **Data - scenarios**
+- Same question for Great Britain<small>
+- *The future is unpredictable so we try several scenarios to have an idea about the possible futures and increase the chance to make a good decision (more thermal capacities, more renewable energy etc.) --> We will see this thanks to* **Data - scenarios**</small>
+</small>
+<div class="footer"></div>
 
-Unsupplied energy / Data - scenarios
+Unsupplied energy scenario / Data - scenarios
 ========================================================
 type: text-slide
 
 ***exercise/import data*** : in the tab "Data":
+<small>
 - Click in the tab "Import Data"
 - Select the simulation "20170112-1832eco-pascontraintenbmax.h5"
 - Click on "Set simulation"
@@ -217,8 +235,10 @@ type: text-slide
 - Click on "Validate & import data"
 - delete "mcYear" in the parameter "plotMap"
 - Click on "Launch Analysis"
+</small>
+<div class="footer"></div>
 
-Unsupplied energy / Data - scenarios - tsPlot
+Unsupplied energy scenario / Data - scenarios - tsPlot
 ========================================================
 type: text-slide
 
@@ -245,7 +265,10 @@ type: text-slide
 
 . You be able to use a lot of statical packages (10 thousand on CRAN) : kmeans, rpart, caret, FactoMineR etc.
 
-. Today you will learn a few things form R, if you want to learn more about R and DataScience, ***RTE can propose you others training***. 
+<small>
+*Today you will learn a few things form R, if you want to learn more about R and DataScience*, ***RTE can propose you others training***. 
+</small>
+<div class="footer"></div>
 
 What is R?
 ========================================================

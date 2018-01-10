@@ -565,6 +565,9 @@ body {
     text-align:center; width:100%;
 }
 
+.toBig .reveal p {
+    font-size: 100%;
+}
 
 
 .code-slide .reveal h1,
@@ -630,11 +633,13 @@ body {
    background-size: cover;
 }
 
-.antaresViz .reveal h1,
 .antaresViz .reveal p {
-    color: black;
-    text-align: center;
+    color: white;
     Font-Weight: Bold;
+    vertical-align: middle;
+    line-height: 1000px;
+    text-align: center;
+    font-size: 250%;
 }
 
 .explainTheResult .reveal .state-background {
@@ -966,8 +971,256 @@ You can write your notes here.
 
 </section>
 <section data-state="antaresViz" data-transition="linear" data-transition-speed="default">
-<h3>Lets try appAntaresViz</h3>
+
+<div class="slideContent noTitle" >
+<p>Lets try appAntaresViz</p>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Data</h3>
 <div class="slideContent" >
+<!---
+TODO rajouter une image de l'aplication
+-->
+
+<p><strong><em>exercise/import data</em></strong> : 
+<small></p>
+
+<ul>
+<li><p>Run antaresVizualisation</p></li>
+<li><p>Select the folder &ldquo;dataTyndp&rdquo;</p></li>
+<li><p>Select the simulation &ldquo;20170830-1049eco-reference.h5&rdquo;</p></li>
+<li><p>Click on &ldquo;Set Simulation&rdquo;</p></li>
+<li><p>Imports all areas and links </p></li>
+<li><p>Click on &ldquo;Validate &amp; import data&rdquo;</p></li>
+<li><p>Click on &ldquo;Launch Analysis&rdquo;</p></li>
+<li><p>Click on &ldquo;tsPlot&rdquo;</p></li>
+<li><p>Click on &ldquo;H5request&rdquo;</p></li>
+<li><p>Import mcYear 4 </p></li>
+</ul>
+
+<p></small></p>
+
+<div class="footer"></div>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; tsPlot</h3>
+<div class="slideContent" >
+<p><strong><em>exercise</em></strong> :in the tab &ldquo;tsPlot&rdquo; and &ldquo;type : monotone/times series/heat map&rdquo; </p>
+
+<ul>
+<li>Find the country who have the most of unsupplied energy for the mcYear 4 between &ldquo;France&rdquo;, &ldquo;Germany&rdquo;, &ldquo;Belgium&rdquo;, &ldquo;Netherlands&rdquo;, &ldquo;Portugal&rdquo;, &ldquo;Austria&rdquo; and &ldquo;Great Britain&rdquo;</li>
+<li>For this country, which month have the most of unsupplied energy</li>
+<li>Find the date when the maximum of unsupplied energy is reached, in the following we will refers to this country by <span style="color:red;">Mystery</span> and the date by <span style="color:red;">Ttime</span></li>
+<li>Why there is unsupplied energy for this year in <span style="color:red;">Mystery</span>? &ndash;&gt; We will see this thanks to <strong>prodStack</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; prodStack</h3>
+<div class="slideContent" >
+<p><strong><em>exercise</em></strong> : in the tab &ldquo;prodStack&rdquo; </p>
+
+<ul>
+<li>Import mcYear 4 and 12</li>
+<li>Plot the prodStack for <span style="color:red;">Mystery</span> and for the week containing <span style="color:red;">Ttime</span> for the year 4</li>
+<li>Find the amount of wind production and import/export </li>
+<li>Change the parameter mcYear to <strong>12</strong> and find the amount of wind production and import/export </li>
+<li>Does <span style="color:red;">Mystery</span> import or export for the year <strong>12</strong> ?</li>
+<li>To whom <span style="color:red;">Mystery</span> is importing or exporting for the year 12 ? &ndash;&gt; We will see this thanks to <strong>exchangesStack</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; exchangesStack</h3>
+<div class="slideContent" >
+<p><strong><em>exercise</em></strong> : 
+in the tab &ldquo;exchangesStack&rdquo;: </p>
+
+<ul>
+<li>Import mcYear 4 and 12</li>
+<li>Change the &ldquo;area&rdquo; to <span style="color:red;">Mystery</span></li>
+<li>For the year 12, to whom <span style="color:red;">Mystery</span> is importing or exporting ? </li>
+<li>For the year 4, to whom <span style="color:red;">Mystery</span> is importing or exporting ? </li>
+<li>For <span style="color:red;">Ttime</span> and the year 4, are there null flows between this country and others ? if yes, why ? &ndash;&gt; We will see this thanks to <strong>plotMap</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; plotMap - Layout</h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;plotMap/Current Layout&rdquo;:</p>
+
+<ul>
+<li>import the file &ldquo;dataTyndp/mapLayoutTyndp.RDS&rdquo; with the button &ldquo;Browse&hellip;&rdquo;&ldquo;</li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Map </h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;plotMap/Map&rdquo;:
+<small></p>
+
+<ul>
+<li>Import mcYear 4 and 12 and change the parameter mcYear to 4</li>
+<li>Change the parameter DateRange for the day containing <span style="color:red;">Ttime</span></li>
+<li>In the tab &ldquo;Areas&rdquo;, change the parameter &ldquo;color&rdquo;&ldquo; to &quot;LOAD&rdquo;</li>
+<li>Click on update </li>
+<li>In the tab &ldquo;Areas&rdquo;, change the parameter &ldquo;Size&rdquo; to &ldquo;H. ROR&rdquo;, &ldquo;PSP&rdquo;, &ldquo;MISC. NDG&rdquo;, &ldquo;WIND&rdquo;, &ldquo;SOLAR&rdquo;, &ldquo;NUCLEAR&rdquo;, &ldquo;LIGNITE&rdquo;, &ldquo;GAS&rdquo;, &ldquo;COAL&rdquo;, &ldquo;OIL&rdquo;, &ldquo;MIX. FUEL&rdquo;, &ldquo;MISC. DTG&rdquo;, &ldquo;H. STOR&rdquo;</li>
+<li>Click on update 
+</small></li>
+</ul>
+
+<div class="footer"></div>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Map with miniplots</h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;plotMap/Map&rdquo;:</p>
+
+<ul>
+<li>In the tab &ldquo;Areas/miniPlot&rdquo;, change the parameter &ldquo;areaCharType&rdquo; to &ldquo;pie chart&rdquo;, click on update </li>
+<li>In the tab &ldquo;Areas/miniPlot&rdquo;, check the box &ldquo;sizeMiniPlot&rdquo;, click on update </li>
+<li>In the tab &ldquo;Areas&rdquo;, change the parameter &ldquo;Popup&rdquo; to &ldquo;UNSP. ENRG&rdquo;, &ldquo;SPIL. ENRG&rdquo;, &ldquo;DTG MRG&rdquo;, &ldquo;AVL DTG&rdquo;, &ldquo;MAX MRG&rdquo;, &ldquo;MRG. PRICE&rdquo;, &ldquo;BALANCE&rdquo;, click on update </li>
+<li>Click on one pie chart</li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Map for links</h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;plotMap/Map&rdquo;:</p>
+
+<ul>
+<li>In the tab &ldquo;Links&rdquo;, change the parameter &ldquo;Color&rdquo; to &ldquo;CONG. PROP +&rdquo;</li>
+<li>Click on update </li>
+<li>In the tab &ldquo;Links&rdquo;, change the parameter &ldquo;Width&rdquo; to &ldquo;FLOW LIN.&rdquo;</li>
+<li>Click on update </li>
+<li>Click on one link<br/></li>
+<li>In the tab &ldquo;Links&rdquo;, change the parameter &ldquo;Popup&rdquo; to &ldquo;CONG. PROP -&rdquo;, &ldquo;MARG. COST&rdquo;</li>
+<li>Click on update </li>
+<li>Click on one link<br/></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Questions</h3>
+<div class="slideContent" >
+<p><strong><em>exercise</em></strong> : in the tab &ldquo;plotMap/Map&rdquo;:</p>
+
+<ul>
+<li>On the map, click on play and pause when you reach <span style="color:red;">Ttime</span></li>
+<li>Is <span style="color:red;">Mystery</span> imports or exports? to whom ? </li>
+<li>Are there null flows between <span style="color:red;">Mystery</span> and others ? if yes, why ? </li>
+<li>Are there links not congestionned between Netherlands and others countries ? why ? </li>
+<li>Change the parameter mcYear to 12</li>
+<li>Click on update</li>
+<li>Is <span style="color:red;">Mystery</span> imports or exports? to whom and why ? </li>
+<li>It&#39;s better to compare the two maps in one screen &ndash;&gt; We will see this thanks to <strong>Data/compare</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Compare</h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;Data&rdquo;:</p>
+
+<ul>
+<li>Add <strong>mcYear</strong> in the parameter &ldquo;plotMap&rdquo; </li>
+<li>Click on &ldquo;Launch Analysis&rdquo;</li>
+<li>Go to the tab &ldquo;plotMap/Map&rdquo;</li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="toBig" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Compare plotMap</h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;plotMap/Map&rdquo;:<small></p>
+
+<ul>
+<li>Import mcYear 4 and 12</li>
+<li>Reconfigure the maps with the previous parameters (Areas, color, size, popup etc.) in one step</li>
+<li>Click on the first graph and choose the mcYear 4 </li>
+<li>Click on the second graph and choose the mcYear 12 </li>
+<li>Click on the update button </li>
+<li>Change the parameter DateRange for the day containing <span style="color:red;">Ttime</span></li>
+<li>Click on play on one map and pause when you reach <span style="color:red;">Ttime</span> </li>
+<li>At <span style="color:red;">Ttime</span> , which is the most important production in Germany for year 4 and for year 12 ?</li>
+<li>Same question for Great Britain<small></li>
+<li><em>The future is unpredictable so we try several scenarios to have an idea about the possible futures and increase the chance to make a good decision (more thermal capacities, more renewable energy etc.) &ndash;&gt; We will see this thanks to</em> <strong>Data - scenarios</strong></small>
+</small>
+<div class="footer"></div></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Data - scenarios</h3>
+<div class="slideContent" >
+<p><strong><em>exercise/import data</em></strong> : in the tab &ldquo;Data&rdquo;:
+<small></p>
+
+<ul>
+<li>Click in the tab &ldquo;Import Data&rdquo;</li>
+<li>Select the simulation &ldquo;20170112-1832eco-pascontraintenbmax.h5&rdquo;</li>
+<li>Click on &ldquo;Set simulation&rdquo;</li>
+<li>Imports all areas and links </li>
+<li>Click on &ldquo;Validate &amp; import data&rdquo;</li>
+<li>Come back to the tab &ldquo;Import Data&rdquo;</li>
+<li>Select a new simulation &ldquo;201710118-0902eco-aveccontraintenbmax.h5&rdquo;</li>
+<li>Click on &ldquo;Set simulation&rdquo;</li>
+<li>Imports all areas and links</li>
+<li>Click on &ldquo;Validate &amp; import data&rdquo;</li>
+<li>delete &ldquo;mcYear&rdquo; in the parameter &ldquo;plotMap&rdquo;</li>
+<li>Click on &ldquo;Launch Analysis&rdquo;
+</small>
+<div class="footer"></div></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="text-slide" data-transition="linear" data-transition-speed="default">
+<h3>Unsupplied energy scenario &#x2F; Data - scenarios - tsPlot</h3>
+<div class="slideContent" >
+<p><strong><em>exercise</em></strong> : In the tab &ldquo;tsPlot&rdquo;:</p>
+
+<ul>
+<li>Import mcYear 4 </li>
+<li>Change DateRange to contain the all year</li>
+<li>Plot the nuclear monotone for France, Germany and Great Britain </li>
+<li>Are there differences between scenarios ? if yes, why ? </li>
+<li>Plot the nuclear density for France for the all year</li>
+<li>Are there differences between scenarios ? </li>
+<li>Plot the nuclear heatmap for France</li>
+<li>For which month there is the most differences between scenarios ? </li>
+</ul>
 
 </div>
 
@@ -983,7 +1236,11 @@ You can write your notes here.
 
 <p>. You be able to use a lot of statical packages (10 thousand on CRAN) : kmeans, rpart, caret, FactoMineR etc.</p>
 
-<p>. Today you will learn a few things form R, if you want to learn more about R and DataScience, <strong><em>RTE can propose you others training</em></strong>. </p>
+<p><small>
+<em>Today you will learn a few things form R, if you want to learn more about R and DataScience</em>, <strong><em>RTE can propose you others training</em></strong>. 
+</small></p>
+
+<div class="footer"></div>
 
 </div>
 
@@ -1054,7 +1311,7 @@ You can write your notes here.
 <pre><code>[1] &quot;A&quot;           &quot;firstObject&quot;
 </code></pre>
 
-<p>Remove objects form memory</p>
+<p>Remove objects from memory</p>
 
 <pre><code class="r">ls();rm(A)
 </code></pre>
@@ -1194,13 +1451,15 @@ Content:
  - Number of Monte-Carlo years: 34
 </code></pre>
 
-<pre><code class="r">myData&lt;-readAntares(
+<pre><code class="r">suppressWarnings(
+  myData&lt;-readAntares(
   areas = &quot;all&quot;, 
   links=&quot;all&quot;, 
   clusters = &quot;all&quot;, 
   linkCapacity = TRUE,
   mustRun = TRUE,
   showProgress = FALSE
+)
 )
 </code></pre>
 
@@ -1270,6 +1529,31 @@ You can use the r function lenght.
 
 </section>
 <section data-state="title-slide" data-transition="linear" data-transition-speed="default">
+<h3>Data.table</h3>
+<div class="slideContent" >
+<!---
+This is a comment, it will not be included in this presentation. 
+
+You can write your notes here. 
+
+You can use the r function lenght. 
+-->
+
+<ul>
+<li><p>DT[<span style="color:blue"> i </span>,  <span style="color:green">  j </span>, <span style="color:red">  by </span>]</p></li>
+<li><p>subset rows using <span style="color:blue"> i </span></p></li>
+<li><p>then calculate <span style="color:green"> j </span></p></li>
+<li><p>grouped <span style="color:red"> by  </span></p></li>
+</ul>
+
+<p>You can learn the basics about data.table with the  <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html">vignette.</a></p>
+
+<p>You can also found the cheat sheet <a href="https://www.r-bloggers.com/the-data-table-cheat-sheet/">here.</a></p>
+
+</div>
+
+</section>
+<section data-state="title-slide" data-transition="linear" data-transition-speed="default">
 <h3>antaresDataList : List of date.tables</h3>
 <div class="slideContent" >
 <!---
@@ -1292,31 +1576,6 @@ You can use the r function lenght.
 <li><p>Compute the number of areas with spilled energy</p></li>
 <li><p>Compute the number of links with congestion </p></li>
 </ul>
-
-</div>
-
-</section>
-<section data-state="title-slide" data-transition="linear" data-transition-speed="default">
-<h3>Data.table</h3>
-<div class="slideContent" >
-<!---
-This is a comment, it will not be included in this presentation. 
-
-You can write your notes here. 
-
-You can use the r function lenght. 
--->
-
-<ul>
-<li><p>DT[<span style="color:blue"> i </span>, <span style="color:green"> j </span>,<span style="color:red"> j </span>]</p></li>
-<li><p>subset rows using <span style="color:blue"> i </span></p></li>
-<li><p>then calculate <span style="color:green"> i </span></p></li>
-<li><p>grouped by <span style="color:red"> i </span></p></li>
-</ul>
-
-<p>You can learn the basics about data.table with the  <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html">vignette.</a></p>
-
-<p>You can also found the cheat sheet <a href="https://www.r-bloggers.com/the-data-table-cheat-sheet/">here.</a></p>
 
 </div>
 
@@ -1400,9 +1659,9 @@ You can use the r function lenght.
 <p><strong><em>exercise</em></strong> :</p>
 
 <ul>
-<li><p>Get the first year and the first date where there is more than 400MW of unsupplied energy in France and use prodStack to visualize the production stack for this week.  </p></li>
+<li><p>Get the first year and the first date where there is more than 700MW of unsupplied energy in France and use prodStack to visualize the production stack for this week.  </p></li>
 <li><p>Visualise the evolution of the echanges between France and other countries with exchangesStack. </p></li>
-<li><p>plot the price for this week.</p></li>
+<li><p>Plot the price for this week.</p></li>
 </ul>
 
 </div>
@@ -1422,7 +1681,7 @@ You can use the r function lenght.
 <p><strong><em>exercise</em></strong> :</p>
 
 <ul>
-<li>For the the first date where there is unsupplied energy represend the mix of production in Europe and represend the echanges between areas.<br/></li>
+<li>For the date mentioned before represend the mix of production in Europe and represend the echanges between areas.<br/></li>
 </ul>
 
 </div>
@@ -1459,7 +1718,7 @@ You can write your notes here.
   </tr>
 <tr>
 <td style="text-align:left;"> addDownwardMargin, addUpwardMargin </td>
-   <td style="text-align:left;"> Add downward and upwart margins of areas </td>
+   <td style="text-align:left;"> Add downward and upward margins of areas </td>
   </tr>
 <tr>
 <td style="text-align:left;"> addExportAndImport </td>
