@@ -4,6 +4,9 @@
     text-align:center; width:100%;
 }
 
+.toBig .reveal p {
+    font-size: 100%;
+}
 
 
 .code-slide .reveal h1,
@@ -69,11 +72,13 @@
    background-size: cover;
 }
 
-.antaresViz .reveal h1,
 .antaresViz .reveal p {
-    color: black;
-    text-align: center;
+    color: white;
     Font-Weight: Bold;
+    vertical-align: middle;
+    line-height: 1000px;
+    text-align: center;
+    font-size: 250%;
 }
 
 .explainTheResult .reveal .state-background {
