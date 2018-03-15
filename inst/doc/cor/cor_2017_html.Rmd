@@ -1,0 +1,472 @@
+---
+title: "TD R/ANTARES"
+author: "Jalal-Edine ZAWAM"
+date: "13 décembre 2017"
+output:
+  #pdf_document:
+  #  toc: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+  word_document:
+    toc: yes
+always_allow_html: yes
+---
+
+```{r setup and include, include=FALSE}
+
+library(antaresRead)
+library(antaresProcessing)
+library(antaresViz)
+library(data.table)
+library(rpart)
+library(rpart.plot)
+library(magrittr)
+library(manipulateWidget)
+library(knitr)
+library(lubridate)
+library(plotly)
+library(webshot)
+
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = 'center')
+
+
+```
+
+## readAntares
+
+Most data from a simulation can be imported in the R session with function `readAntares()`. 
+
+```{r readData, warning=FALSE}
+myPath<-"E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030"
+opts<-setSimulationPath(myPath, "20170830-1049eco-reference")
+
+myData<-readAntares(
+  areas = "all", 
+  links="all", 
+  clusters = "all", 
+  linkCapacity = TRUE,
+  mustRun = TRUE,
+  showProgress = FALSE
+)
+
+```
+
+## Remove your virtual areas
+
+You can remove your virtual areas and correct your initial data. 
+
+```{r removeVirtualAreas, echo=TRUE}
+myConData<-removeVirtualAreas(
+   x=myData,
+   storageFlexibility = getAreas(select = c("pum", "tur", "z_dsr", "y_mul")), 
+   newCols = FALSE
+ )
+```
+
+## getAreas ans getLinks 
+
+Compute the number of areas without virtual areas. 
+
+```{r getAreas, echo=TRUE}
+
+virtuarAreas<-getAreas(select = c("z_dsr", "y_mul", "pum", "tur"))
+realAreas<-getAreas(exclude = virtuarAreas)
+
+length(getAreas(exclude = virtuarAreas))
+```
+
+Compute the number of links without virtual areas
+
+```{r getLinks, echo=TRUE}
+
+length(getLinks(areas = realAreas, exclude = virtuarAreas))
+```
+
+## antaresDataList : List of date.tables
+
+Compute the number of areas with unsupplied energy
+
+```{r get areas with unspilled energy, echo=TRUE}
+
+length(unique(myConData$areas[`UNSP. ENRG`>0]$area))
+
+
+```
+
+Compute the number of areas with spilled energy
+
+```{r get areas with unspilled spilled energy, echo=TRUE}
+
+length(unique(myConData$areas[`SPIL. ENRG`>0]$area))
+
+
+```
+
+Compute the number of links with congestion
+
+```{r getLinks with congestion, echo=TRUE}
+
+length(unique(myConData$links[`CONG. PROB +`>0]$link)) 
+
+length(unique(myConData$links[`CONG. PROB -`>0]$link)) 
+
+length(unique(myConData$links[`CONG. PROB +`>0  | `CONG. PROB -`>0]$link)) 
+
+length(unique(myConData$links[`CONG. PROB +`>0  & `CONG. PROB -`>0]$link))
+
+```
+
+
+Compute the sum of the spilled energy by area and order the result by the spilled energy
+
+```{r Compute the sum of the spilled energy, echo=FALSE}
+
+myConData$areas[, sumSpilled:=sum(`SPIL. ENRG`), by=area]
+resCompute<-unique(myConData$areas[order(sumSpilled, decreasing = TRUE),.(area, sumSpilled),])
+## NO PRINT
+
+```
+
+```{r RES compute the sum of the spilled energy, echo=TRUE}
+
+## PRINT ONLY RESULT 
+kable(resCompute[, .SD[1:7], ])
+
+```
+
+Compute the sum of the unsupplied energy by area and order the result by the unsupplied energy
+
+```{r Compute the sum of the unsupplied energy, echo=FALSE}
+
+myConData$areas[, sumUnspilled:=sum(`UNSP. ENRG`), by=area]
+resComputeUnsEne<-unique(myConData$areas[order(sumUnspilled, decreasing = TRUE),.(area, sumUnspilled),])
+## NO PRINT
+
+```
+
+```{r RES compute the sum of the unsupplied energy, echo=TRUE}
+
+## PRINT ONLY RESULT 
+kable(resComputeUnsEne[, .SD[1:7], ])
+
+```
+
+##Explain the result for unsupplied energy in France: with rpart or others statical packages FactoMineR, kmeans
+
+
+```{r rpart, echo=FALSE}
+
+onlyAreaNoFar<-c("fr", "es", "pt", "ch", "itn", "itcn", "be", "gb", "ni", "ie", "nl", "de", "nos", "pl", "cz")
+
+mySubset<-subset(myConData, areas=onlyAreaNoFar)
+myMergeSubset<-mergeAllAntaresData(mySubset)
+
+myRpart<-rpart(`UNSP. ENRG_fr`~. - `UNSP. ENRG_std_fr` - `OV. COST_fr` -`UNSP. ENRG_max_fr`, data=myMergeSubset[`UNSP. ENRG_fr`>0])
+rpart.plot(myRpart)
+
+```
+
+## Explain the result for unsupplied energy in France without some variables
+
+```{r rpart 2 , echo=FALSE}
+
+myRpart<-rpart(`UNSP. ENRG_fr`~. - `UNSP. ENRG_std_fr` - `OV. COST_fr` - `UNSP. ENRG_max_fr` - `MAX MRG_fr` - `MAX MRG_min_fr` - `MAX MRG_std_fr`, data=myMergeSubset[`UNSP. ENRG_fr`>0])
+rpart.plot(myRpart)
+
+```
+
+##antaresViz : prodStack, exchangesStack and plot
+
+Get the first year and the first date where there is more than 700MW of unsupplied energy in France and use prodStack to visualize the production stack for this week.
+
+
+```{r date where there is unsupplied energy in France , echo=FALSE, fig.align="center"}
+
+#find the two first mcYear
+count<-0
+timesIds<-NULL
+mcYears<-NULL
+timeId2<-NULL
+for(i in 1:50){
+  myDataFr<-readAntares(areas = "fr", mcYears = i, showProgress = FALSE)
+  if(!is.na(myDataFr[`UNSP. ENRG`>700 & area=="fr",]$time[1])){
+    print(paste0("mcYear :", i))
+    print(paste0("time :", myDataFr[`UNSP. ENRG`>700 & area=="fr", ]$time[1]))
+    print(paste0("timeId :", myDataFr[`UNSP. ENRG`>700 & area=="fr", ]$timeId[1]))
+    print(paste0("day :", myDataFr[`UNSP. ENRG`>700 & area=="fr", ]$day[1]))
+    timesIds<-c(timesIds, as.character(myDataFr[`UNSP. ENRG`>700 & area=="fr", ]$time[1]))
+    timeId2<-c(timeId2, as.character(myDataFr[`UNSP. ENRG`>700 & area=="fr", ]$timeId[1]))
+    mcYears<-c(mcYears, i)
+    count<-count+1
+    if(count>=2){
+      break()
+    }  
+  }
+}
+
+```
+# prodStack, exchangesStack
+
+```{r use prodStack , echo=TRUE, fig.show='hold',fig.align='center', error=TRUE, fig.align="center"}
+
+myDataFr<-suppressWarnings(readAntares(areas = "fr", mcYears = mcYears[1], showProgress = FALSE, links = "all", linkCapacity = TRUE))
+
+prodStack(myDataFr, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, area="fr")
+
+exchangesStack(myDataFr, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, area="fr")
+
+plot(myDataFr$areas, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, elements="fr", variable="MRG. PRICE", mcYear=4, type="ts", stepPlot=TRUE)
+
+```
+
+# use consolidated data 
+
+```{r consolidated data , echo=TRUE, fig.show='hold',fig.align='center'}
+
+myDataFr<-suppressWarnings(readAntares(links = getLinks(areas = c("z_dsr450", "y_mul", "pum", "tur", "fr")), areas = getAreas(select = c("z_dsr450", "y_mul", "pum", "tur", "fr")), mcYears = 4, linkCapacity = TRUE, showProgress = FALSE))
+
+myConDataFr<-removeVirtualAreas(
+  x=myDataFr,
+  storageFlexibility = getAreas(select = c("pum", "tur", "z_dsr", "y_mul")),
+  newCols = FALSE, 
+  reassignCosts = TRUE
+)
+
+prodStack(myConDataFr, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, area="fr")
+
+exchangesStack(myConDataFr, dateRange=c("2018-01-01 00:00:00", "2018-01-07 23:00:00"), interactive = FALSE, area="fr")
+
+```
+
+# antaresViz : plotMap
+
+configure a layout or import one 
+
+
+```{r layout , echo=TRUE, fig.show='hold',fig.align='center'}
+
+#mlTyndp<-mapLayout(readLayout())
+#plotMapLayout(mlTyndp)
+#saveRDS(mlTyndp, file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\user\\mlTyndp2017_V2.rds")
+
+mlTyndp<-readRDS(file = "E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\mapLayoutTyndp.rds")
+
+```
+
+#Data for Europe
+
+```{r import Data for Europe , echo=TRUE}
+myDataEurope<-suppressWarnings(readAntares(links = "all", areas = "all", linkCapacity = TRUE, showProgress = FALSE, mcYears = mcYears[1]))
+
+myConDataEurope<-removeVirtualAreas(
+  x=myDataEurope,
+  storageFlexibility = getAreas(select = c("pum", "tur", "z_dsr", "y_mul")),
+  newCols = FALSE
+)
+
+addLoadFactorLink(myConDataEurope)
+
+```
+
+<!--- #get the variables -->
+
+```{r get the variables , echo=FALSE, message=FALSE, results='hide', fig.align="center"}
+
+#select your variables 
+resGen<-invisible(showAliases(names="generation"))
+resRen<-showAliases(names="renewable")
+vecGen<-as.vector(resGen$select)
+vecRen<-as.vector(resRen$select)
+vecGen <- strsplit(vecGen,", ",fixed=TRUE)[[1]]
+vecRen <- strsplit(vecRen,", ",fixed=TRUE)[[1]]
+
+varPlotMap<-c(vecGen, vecRen)
+
+popUpVar<-showAliases(names="adequacy")
+vecAde<-as.vector(popUpVar$select)
+vecAde <- strsplit(vecAde,", ",fixed=TRUE)[[1]]
+
+```
+
+#Use plotMap 
+
+The flow value of Great Britain/France is equal to zero, these two countries have unsupplied energy.
+
+The flow between Belgium/France is 1295 but the link is not congested because Belgium has no marge. 
+
+All others flows to France are congested.  
+
+
+```{r plotMap , echo=TRUE, message=FALSE, fig.show='hold',fig.align='center', error=TRUE}
+
+plotMap(
+  myConDataEurope, 
+  mlTyndp, 
+  sizeAreaVars=varPlotMap, 
+  areaChartType="pie", 
+  interactive = FALSE,
+  sizeMiniPlot = TRUE, 
+  colAreaVar="LOAD", 
+  colLinkVar="congestion",
+  sizeLinkVar="FLOW LIN.",
+  popupAreaVars = c(varPlotMap, vecAde, "PSP", "LOAD", "SPIL. ENRG"), 
+  timeId = 115, 
+  type = "detail"
+)
+
+```
+
+#With interaction
+
+```{r plotMap interactive TRUE, eval=FALSE, echo=TRUE, message=FALSE}
+
+plotMap(
+  myConDataEurope, 
+  mlTyndp, 
+  .updateBtn = TRUE, 
+  .updateBtnInit=TRUE
+)
+
+```
+
+#You can change color option with plotMapOption
+
+```{r plotMap options, eval=TRUE, echo=TRUE, fig.show='hold',fig.align='center', error=TRUE }
+
+linkColorScaleOpts<-colorScaleOptions(
+  breaks = 1, 
+  negCol = "#00FF00", 
+  zeroCol = "#FFFFFF", 
+  posCol = "#FF0000", 
+  naCol = "#EEEEEE",
+  levels = c(0,1)
+)
+
+resOptions<-plotMapOptions(
+  linkColorScaleOpts = linkColorScaleOpts
+)
+
+plotMap(
+  myConDataEurope, 
+  mlTyndp, 
+  sizeAreaVars=varPlotMap, 
+  areaChartType="pie", 
+  interactive = FALSE,
+  sizeMiniPlot = TRUE, 
+  colAreaVar="LOAD", 
+  colLinkVar="congestion",
+  sizeLinkVar="FLOW LIN.",
+  popupAreaVars = c(varPlotMap, vecAde, "PSP", "LOAD", "SPIL. ENRG"), 
+  timeId = 115, 
+  type = "detail", 
+  options = resOptions
+)
+
+```
+
+#Upward margin 
+
+
+```{r Upward margin get the data, eval=TRUE, echo=TRUE, cache=TRUE}
+
+ListMyDataFr<-list()
+for(i in mcYears){
+
+  ListMyDataFr[[i]]<-suppressWarnings(
+    readAntares(
+      links = "all", 
+      areas = "all",  
+      linkCapacity = TRUE, 
+      showProgress = FALSE, 
+      mcYears = i,
+      hydroStorageMaxPower = TRUE
+      )
+    )
+  
+ ListMyDataFr[[i]]<-removeVirtualAreas(
+   x=ListMyDataFr[[i]],
+   storageFlexibility = getAreas(select = c("pum", "tur", "z_dsr", "y_mul")), 
+   newCols = FALSE
+ )}
+
+
+resPlotMap<-list()
+timeId<-NULL
+for(i in mcYears){
+  addLoadFactorLink(ListMyDataFr[[i]])
+  addUpwardMargin(ListMyDataFr[[i]])
+  
+  ListMyDataFr[[i]]$areas[area=="tr", interconnectedUpwardMargin:=0]
+
+}
+
+```
+
+```{r Upward margin plot the data, eval=TRUE, echo=FALSE, results='hold'}
+
+  
+timeId4<-115
+timeId5<-931  
+  
+plotMap(
+  ListMyDataFr[[4]], 
+  mlTyndp, 
+  colAreaVar="interconnectedUpwardMargin",
+  sizeAreaVars=c("interconnectedUpwardMargin", "isolatedUpwardMargin"), 
+  areaChartType="pie", 
+  interactive = FALSE,
+  sizeMiniPlot = TRUE, 
+  colLinkVar="congestion",
+  sizeLinkVar="FLOW LIN.",
+  popupAreaVars = c(varPlotMap, vecAde, "PSP", "LOAD", "SPIL. ENRG"), 
+  timeId = timeId4, 
+  type = "detail", 
+  showLabels=TRUE, 
+  labelAreaVar="interconnectedUpwardMargin"
+)
+
+plotMap(
+  ListMyDataFr[[5]], 
+  mlTyndp, 
+  colAreaVar="interconnectedUpwardMargin",
+  sizeAreaVars=c("interconnectedUpwardMargin", "isolatedUpwardMargin"), 
+  areaChartType="pie", 
+  interactive = FALSE,
+  sizeMiniPlot = TRUE, 
+  colLinkVar="congestion",
+  sizeLinkVar="FLOW LIN.",
+  popupAreaVars = c(varPlotMap, vecAde, "PSP", "LOAD", "SPIL. ENRG"), 
+  timeId = timeId5, 
+  type = "detail", 
+  showLabels=TRUE, 
+  labelAreaVar="interconnectedUpwardMargin"
+)
+
+```
+
+#Save memory and time with h5
+
+Write your simulation in h5. 
+```{r h5, eval=FALSE, echo=TRUE, message=FALSE}
+
+writeAntaresH5(
+  path="E:\\ANTARES\\Exemple_antares\\2_exemple_etudes_importantes\\TYNDP\\ST2030\\ST2030\\writeH5",
+  allData = FALSE, #thermalAvailabilites and hydroStorage were not exported
+  misc = TRUE, 
+  thermalAvailabilities = FALSE,
+  hydroStorageMaxPower = TRUE, 
+  reserve = TRUE,
+  linkCapacity = TRUE,
+  mustRun = TRUE, 
+  writeAllSimulations = TRUE,
+  writeMcAll = TRUE,
+  nbCores=3,
+  removeVirtualAreas=TRUE,
+  storageFlexibility=getAreas(select = c("pum", "tur", "z_dsr", "y_mul")),
+  newCols = FALSE,
+  overwrite = TRUE, 
+  timeSteps = "hourly"
+)
+```
